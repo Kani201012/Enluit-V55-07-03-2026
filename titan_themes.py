@@ -525,58 +525,89 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     }}
     
    @media (max-width: 480px) {{
-        /* 1. CRITICAL: KILL HORIZONTAL SCROLL & FIX CLIPPING */
-        html, body {{ width: 100% !important; max-width: 100% !important; overflow-x: hidden !important; position: relative; }}
-        .container {{ padding: 0 20px !important; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow-x: hidden; }}
+        /* 1. ELIMINATE THE BLUE GAP & HORIZONTAL GLITCHES */
+        html, body {{ 
+            width: 100% !important; 
+            margin: 0 !important; 
+            padding: 0 !important; 
+            overflow-x: hidden !important; 
+            background: var(--bg); /* Matches background to theme to hide gaps */
+        }}
 
-        /* 2. FIX FOOTER PADDING & BUTTON OVERLAP */
-        footer {{ padding: 4rem 0 8rem 0 !important; }} /* Adds massive empty space at bottom so floating icons don't cover text */
-        .footer-grid {{ gap: 2rem !important; }} /* Tightens up the footer link spacing */
+        .container {{ 
+            width: 100% !important; 
+            max-width: 100% !important; 
+            padding: 0 24px !important; /* Proper breathing room for text */
+            margin: 0 auto !important;
+            box-sizing: border-box !important;
+        }}
 
-        /* 3. FIX MASSIVE HERO TEXT */
+        /* 2. FOOTER SAFE ZONE (Prevents buttons from covering links) */
+        footer {{ 
+            padding: 4rem 0 10rem 0 !important; /* Extra bottom padding so you can scroll past the buttons */
+        }}
+        .footer-grid {{ 
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 3rem !important; 
+            text-align: left !important;
+        }}
+
+        /* 3. HERO & TEXT SCALING */
         h1, #hero-title, .modern-hero-text h1 {{ 
-            font-size: clamp(2.2rem, 10vw, 3rem) !important; 
-            line-height: 1.15 !important; 
-            word-wrap: break-word !important;
-            margin-bottom: 1rem !important;
+            font-size: 2.4rem !important; 
+            line-height: 1.1 !important; 
+            margin-bottom: 1.5rem !important;
         }}
         
         #hero-sub, .modern-hero-text p {{
-            font-size: 1.05rem !important; 
-            line-height: 1.5 !important;
-            margin-bottom: 2rem !important;
+            font-size: 1.1rem !important; 
+            opacity: 0.8;
+            margin-bottom: 2.5rem !important;
         }}
 
-        /* 4. FIX HERO BUTTONS TO STACK VERTICALLY */
+        /* 4. BUTTON STACKING */
         .hero-btn-group {{ 
             display: flex; 
             flex-direction: column !important; 
-            gap: 15px; 
+            gap: 12px; 
             width: 100%; 
         }}
-        .hero-btn-group .btn {{ width: 100% !important; margin: 0 !important; }}
+        .hero-btn-group .btn {{ width: 100% !important; }}
 
-        /* 5. FIX VIDEO/VISUAL FRAME BLEEDING OFF SCREEN */
-        .modern-hero-visual {{ height: 320px !important; width: 100% !important; padding: 0 !important; margin-top: 1rem !important; }}
-        .visual-frame {{ border-width: 4px !important; border-radius: 16px !important; width: 100% !important; height: 100% !important; }}
+        /* 5. FLOATING BUTTON TRAFFIC CONTROL (Corner Pinning) */
+        /* We move them to 10px from the edge so they don't block the center text */
+        #wa-widget {{ 
+            bottom: 15px !important; 
+            right: 10px !important; 
+            scale: 0.8; 
+        }}
+        #theme-toggle {{ 
+            bottom: 15px !important; 
+            left: 10px !important; 
+            scale: 0.8; 
+            background: rgba(255,255,255,0.9); /* Makes toggle stand out on dark footers */
+            border: 1px solid rgba(0,0,0,0.1);
+        }}
+        #cart-float {{ 
+            bottom: 80px !important; 
+            right: 10px !important; 
+            scale: 0.8; 
+        }}
+        #voice-btn {{ 
+            bottom: 140px !important; 
+            right: 10px !important; 
+            scale: 0.8; 
+        }}
 
-        /* 6. Shrink all Modals and Popups */
-        #cart-modal, #lead-popup, #lang-modal {{ padding: 1.5rem !important; width: 95% !important; }}
-        #cart-modal h3, #lang-modal h3, #lead-popup h3 {{ font-size: 1.4rem !important; }}
-
-        /* 7. Product detail constraints */
-        .detail-view {{ padding: 1.5rem !important; margin: 0px !important; gap: 1.5rem !important; border-radius: 20px !important; }}
-        .product-info-column {{ padding-bottom: 20px !important; }}
-        .product-price-tag {{ font-size: 1.5rem !important; margin-bottom: 1rem !important; }}
-        #main-img, model-viewer {{ height: 300px !important; }}
-
-        /* 8. Ensure standard buttons are reachable */
-        .btn-accent {{ width: 100% !important; min-width: unset !important; padding: 1rem !important; font-size: 0.9rem !important; }}
-
-        /* 9. FLOATING BUTTON TRAFFIC CONTROL */
-        #wa-widget {{ bottom: 15px !important; right: 15px !important; scale: 0.85; transform-origin: bottom right; }}
-        #theme-toggle {{ bottom: 15px !important; left: 15px !important; scale: 0.85; transform-origin: bottom left; }}
-        #cart-float {{ bottom: 85px !important; right: 15px !important; scale: 0.85; transform-origin: bottom right; }}
-        #voice-btn {{ bottom: 145px !important; right: 15px !important; scale: 0.85; transform-origin: bottom right; }}
+        /* 6. COMPONENT FIXES */
+        .modern-hero-visual {{ height: 300px !important; margin-top: 2rem !important; }}
+        .visual-frame {{ border-width: 4px !important; }}
+        .stat-block h3 {{ font-size: 2.8rem !important; }}
+        .modern-feature-card {{ padding: 2rem !important; }}
+        
+        /* Pricing Table Mobile Fix */
+        .pricing-table {{ min-width: 100% !important; }}
+        .pricing-table th, .pricing-table td {{ padding: 1rem 0.5rem !important; font-size: 0.85rem !important; }}
     }}
     """
