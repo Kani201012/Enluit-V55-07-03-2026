@@ -82,7 +82,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         color: var(--txt-b); 
         font-family: var(--b-font); 
         font-size: var(--p-size); 
-        line-height: 1.6; 
+        line-height: 1.8; 
         overflow-x: hidden; /* Prevent horizontal scroll */
         width: 100vw; max-width: 100%;
     }}
@@ -99,8 +99,16 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
 
     h1 {{ font-size: var(--h1-size); {gradient_text} }}
     h2 {{ font-size: calc(var(--h1-size) * 0.7); }}
-    h3 {{ font-size: 1.5rem; }}
-    p {{ margin-bottom: 1.2rem; }}
+    h3 h3 {{ 
+        font-size: 1.6rem; 
+        margin-bottom: 1.2rem; 
+        line-height: 1.3;
+        color: var(--txt-h);
+    }}
+    p margin-bottom: 2rem; 
+        opacity: 0.9;
+        font-weight: 400;
+    }}
 
     
     /* 2026 ADVANCED HERO ENGINE */
