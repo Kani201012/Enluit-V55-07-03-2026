@@ -568,13 +568,15 @@ def gen_cart_system():
         if(n) msg += `%0ADeliver to: ${{n}}, ${{a}}`;
         {f"msg += '%0A(Variant: ' + localStorage.getItem('titan_ab') + ')';" if enable_ab else ""}
         msg += `%0A%0AUPI: {upi_id} | PayPal: {paypal_link}`;
-        window.open(`https://wa.me/{clean_wa}?text=${msg}`, '_blank', 'noopener,noreferrer');
+        
+        // LIGHTHOUSE FIX (With proper Python f-string escaping)
+        window.open(`https://wa.me/{clean_wa}?text=${{msg}}`, '_blank', 'noopener,noreferrer');
+        
         cart = []; renderCart(); toggleCart();
     }}
     window.addEventListener('load', renderCart);
     </script>
     """
-
 def gen_wa_widget():
     if not wa_num: return ""
     clean_wa = wa_num.replace("+", "").replace(" ", "").replace("-", "")
