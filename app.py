@@ -403,8 +403,14 @@ def gen_hero():
         setInterval(() => {{ slides[currentSlide].classList.remove('active'); currentSlide = (currentSlide + 1) % slides.length; slides[currentSlide].classList.add('active'); }}, 4000);
     </script>
     """
+    
     if hero_video_id: 
-         bg_media = f'<iframe src="https://www.youtube-nocookie.com/embed/{clean_id}?autoplay=1&mute=1&loop=1&playlist={clean_id}&controls=0&showinfo=0&rel=0" class="hero-video" style="width:100%; height:100%; object-fit:cover; pointer-events:none;" frameborder="0" allow="autoplay; encrypted-media"></iframe>'
+        # SMART ID EXTRACTOR: Handles full URLs, Shorts, youtu.be, or raw IDs
+        import re
+        match = re.search(r'(?:v=|/v/|youtu\.be/|/embed/|/shorts/|^)([a-zA-Z0-9_-]{11})', hero_video_id.strip())
+        clean_id = match.group(1) if match else hero_video_id.strip()
+        
+        bg_media = f'<iframe src="https://www.youtube.com/embed/{clean_id}?autoplay=1&mute=1&loop=1&playlist={clean_id}&controls=0&showinfo=0&rel=0" class="hero-video" style="width:100%; height:100%; object-fit:cover; pointer-events:none;" frameborder="0" allow="autoplay; encrypted-media"></iframe>'
     
     # Conditional logic: Only build the HTML if hero_badge_txt is not empty
     badge_html = f'<div class="hero-badge">{hero_badge_txt}</div>' if hero_badge_txt.strip() else ''
