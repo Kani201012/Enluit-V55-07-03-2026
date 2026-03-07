@@ -334,7 +334,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
        ========================================= */
        
     /* 1. ASYMMETRICAL HERO WITH FLOATING GLASS */
-    .modern-hero {{ position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px 0; background: var(--bg); overflow: hidden; z-index: 1; }}
+    .modern-hero {{ position: relative; min-height: 100vh; display: flex; {h_align} padding-top: 120px; }}
     .modern-hero-bg {{ position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, rgba(128,128,128,0.05) 0%, transparent 50%); z-index: -1; animation: rotate 60s linear infinite; }}
     .modern-hero-grid {{ display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: center; width: 100%; }}
     
@@ -534,6 +534,10 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     }}
     
    @media (max-width: 480px) {{
+         p {{ 
+            text-align: left; /* Optional: We usually switch back to left-align on very narrow screens to prevent 'rivers' of white space */
+            hyphens: auto; 
+        }}
         /* 1. ELIMINATE THE BLUE GAP & HORIZONTAL GLITCHES */
         html, body {{ 
             width: 100% !important; 
