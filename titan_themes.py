@@ -57,7 +57,7 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
     if hero_align == "Left":
         h_align = "text-align: left; justify-content: flex-start; align-items: center;"
 
-    # 3. Return exact CSS with added Mobile Fixes (.contact-grid, iframes, z-indexes, @media queries)
+    # 3. Return exact CSS with Professional Typography & Mobile Fixes
     return f"""
     :root {{
         --p: {t['p']}; --s: {t['s']}; --bg: {t['bg']}; 
@@ -82,12 +82,12 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         color: var(--txt-b); 
         font-family: var(--b-font); 
         font-size: var(--p-size); 
-        line-height: 1.8; 
-        overflow-x: hidden; /* Prevent horizontal scroll */
+        line-height: 1.8; /* Industry standard for high readability */
+        letter-spacing: 0.01em; /* Subtle air between characters */
+        overflow-x: hidden; 
         width: 100vw; max-width: 100%;
     }}
     
-    /* FIX: Stop iframes from breaking layout on mobile */
     iframe, model-viewer {{ max-width: 100%; }}
     
     h1, h2, h3, h4 {{ 
@@ -95,21 +95,22 @@ def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color
         color: var(--txt-h); 
         line-height: 1.1; 
         font-weight: 800;
+        margin-bottom: 1.5rem;
     }}
 
     h1 {{ font-size: var(--h1-size); {gradient_text} }}
     h2 {{ font-size: calc(var(--h1-size) * 0.7); }}
-    h3 h3 {{ 
-        font-size: 1.6rem; 
-        margin-bottom: 1.2rem; 
-        line-height: 1.3;
-        color: var(--txt-h);
-    }}
-    p margin-bottom: 2rem; 
+    h3 {{ font-size: 1.6rem; color: var(--txt-h); }}
+
+    p {{ 
+        margin-bottom: 2rem; 
         opacity: 0.9;
         font-weight: 400;
+        text-align: justify; /* THIS MAKES THE TEXT ARRANGEMENT STRAIGHT */
+        text-justify: inter-word; /* Balances the gaps between words */
+        hyphens: auto; /* Prevents awkward gaps on mobile */
+        -webkit-hyphens: auto;
     }}
-
     
     /* 2026 ADVANCED HERO ENGINE */
     .hero {{ position: relative; min-height: 95vh; overflow: hidden; display: flex; {h_align} padding-top: 120px; }}
