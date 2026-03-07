@@ -283,24 +283,29 @@ with tabs[8]:
 
 def format_text(text):
     if not text: return ""
+    
+    # 1. Handle Bold Text
     processed_text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', text)
-    lines = processed_text.split('\n')
+    
+    # 2. Split text into paragraphs based on double newlines
+    paragraphs = processed_text.split('\n\n')
+    
     html_out = ""
-    in_list = False
-    for line in lines:
-        clean_line = line.strip()
-        if not clean_line: continue
-        if clean_line.startswith("* "):
-            if not in_list: 
-                html_out += '<ul style="margin-bottom:1rem; padding-left:1.5rem;">'
-                in_list = True
-            html_out += f'<li style="margin-bottom:0.5rem; opacity:0.9; color:inherit;">{clean_line[2:]}</li>'
+    for para in paragraphs:
+        if not para.strip(): continue
+        
+        # Check if this paragraph is actually a list
+        if para.strip().startswith("* "):
+            lines = para.strip().split('\n')
+            html_out += '<ul style="margin-bottom:2rem; padding-left:1.5rem;">'
+            for line in lines:
+                if line.strip().startswith("* "):
+                    html_out += f'<li style="margin-bottom:0.8rem;">{line.strip()[2:]}</li>'
+            html_out += '</ul>'
         else:
-            if in_list: 
-                html_out += "</ul>"
-                in_list = False
-            html_out += f"<p style='margin-bottom:1rem; opacity:0.9; color:inherit;'>{clean_line}</p>"
-    if in_list: html_out += "</ul>"
+            # Wrap standard text in a paragraph tag with a clean bottom margin
+            html_out += f'<p style="margin-bottom:2rem; line-height:1.8;">{para.strip()}</p>'
+            
     return html_out
 
 def gen_schema():
