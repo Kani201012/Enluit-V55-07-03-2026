@@ -1072,7 +1072,13 @@ if show_cta: home_content += f'<section style="background:var(--s); color:white;
 # --- 7. DEPLOYMENT ---
 st.divider()
 st.subheader("🚀 2050 Launchpad")
-preview_mode = st.radio("Preview Page:", ["Home", "About", "Contact", "Blog Index", "Blog Post (Demo)", "Privacy", "Terms", "Product Detail (Demo)", "Booking Page"], horizontal=True)
+
+# 1. ADD DEVICE TOGGLE NEXT TO PAGE SELECTOR
+col_nav1, col_nav2 = st.columns([3, 1])
+with col_nav1:
+    preview_mode = st.radio("Preview Page:", ["Home", "About", "Contact", "Blog Index", "Blog Post (Demo)", "Privacy", "Terms", "Product Detail (Demo)", "Booking Page"], horizontal=True)
+with col_nav2:
+    device_mode = st.radio("Device View:", ["💻 Desktop", "📱 Mobile Phone"], horizontal=True)
 
 # THE UPGRADED 2026 CONTACT CONTENT
 contact_content = f"""
@@ -1117,7 +1123,6 @@ contact_content = f"""
             </div>
         </div>
         
-        <!-- THE FIX: Container with height and full-width map CSS -->
         <div class="map-container-2050" style="border-radius:var(--radius); overflow:hidden; border:var(--border); margin-top:4rem; box-shadow:var(--shadow); height: 450px; position: relative;">
             {map_iframe}
             <style>
@@ -1135,20 +1140,56 @@ contact_content = f"""
 </section>
 """
 
+# 2. PRE-GENERATE THE RENDER STRING TO AVOID DUPLICATE CODE
+html_to_render = ""
+if preview_mode == "Home": html_to_render = build_page("Home", home_content)
+elif preview_mode == "About": html_to_render = build_page("About", f"{gen_inner_header('About')}<section><div class='container'>{format_text(about_long)}</div></section>")
+elif preview_mode == "Contact": html_to_render = build_page("Contact", contact_content)
+elif preview_mode == "Privacy": html_to_render = build_page("Privacy", f"{gen_inner_header('Privacy')}<section><div class='container'>{format_text(priv_txt)}</div></section>")
+elif preview_mode == "Terms": html_to_render = build_page("Terms", f"{gen_inner_header('Terms')}<section><div class='container'>{format_text(term_txt)}</div></section>")
+elif preview_mode == "Blog Index": html_to_render = build_page("Blog", gen_blog_index_html())
+elif preview_mode == "Blog Post (Demo)": html_to_render = build_page("Article", gen_blog_post_html())
+elif preview_mode == "Product Detail (Demo)":
+    st.info("ℹ️ Demo Mode Active: Showing the first available product from your CSV.")
+    html_to_render = build_page("Product", gen_product_page_content(is_demo=True))
+elif preview_mode == "Booking Page":
+    html_to_render = build_page("Book Now", gen_booking_content())
+
+
+# 3. RENDER THE PREVIEW SCREEN
 c1, c2 = st.columns([3, 1])
 with c1:
-    if preview_mode == "Home": st.components.v1.html(build_page("Home", home_content), height=600, scrolling=True)
-    elif preview_mode == "About": st.components.v1.html(build_page("About", f"{gen_inner_header('About')}<section><div class='container'>{format_text(about_long)}</div></section>"), height=600, scrolling=True)
-    elif preview_mode == "Contact": st.components.v1.html(build_page("Contact", contact_content), height=600, scrolling=True)
-    elif preview_mode == "Privacy": st.components.v1.html(build_page("Privacy", f"{gen_inner_header('Privacy')}<section><div class='container'>{format_text(priv_txt)}</div></section>"), height=600, scrolling=True)
-    elif preview_mode == "Terms": st.components.v1.html(build_page("Terms", f"{gen_inner_header('Terms')}<section><div class='container'>{format_text(term_txt)}</div></section>"), height=600, scrolling=True)
-    elif preview_mode == "Blog Index": st.components.v1.html(build_page("Blog", gen_blog_index_html()), height=600, scrolling=True)
-    elif preview_mode == "Blog Post (Demo)": st.components.v1.html(build_page("Article", gen_blog_post_html()), height=600, scrolling=True)
-    elif preview_mode == "Product Detail (Demo)":
-        st.info("ℹ️ Demo Mode Active: Showing the first available product from your CSV.")
-        st.components.v1.html(build_page("Product", gen_product_page_content(is_demo=True)), height=600, scrolling=True)
-    elif preview_mode == "Booking Page":
-        st.components.v1.html(build_page("Book Now", gen_booking_content()), height=600, scrolling=True)
+    if device_mode == "📱 Mobile Phone":
+        # Create a visual Phone Emulator using Streamlit columns
+        st.markdown("<div style='text-align: center; color: #888; margin-bottom:10px;'><i>📱 iPhone 14 Pro Simulation</i></div>", unsafe_allow_html=True)
+        
+        # We put it in a narrow column (1.5 ratio) surrounded by empty columns (1 ratio)
+        left_spacer, phone_screen, right_spacer = st.columns([1.2, 1.5, 1.2])
+        
+        with phone_screen:
+            # Wrap the iframe in a CSS "bezel" to look like a phone
+            st.markdown("""
+            <style>
+            .phone-bezel {
+                border: 14px solid #1a1a1a;
+                border-radius: 40px;
+                padding: 0;
+                background: #000;
+                box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+                overflow: hidden;
+                margin: 0 auto;
+            }
+            </style>
+            <div class="phone-bezel">
+            """, unsafe_allow_html=True)
+            
+            # The iframe automatically fills the width of the narrow column, triggering mobile CSS
+            st.components.v1.html(html_to_render, height=750, scrolling=True)
+            
+            st.markdown("</div>", unsafe_allow_html=True)
+    else:
+        # Standard Desktop Full Width Preview
+        st.components.v1.html(html_to_render, height=750, scrolling=True)
 
 with c2:
     st.success("2050 Architecture Compiled.")
@@ -1174,6 +1215,7 @@ with c2:
         zf.writestr("service-worker.js", gen_sw())
         zf.writestr("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {prod_url}/sitemap.xml")
         zf.writestr("sitemap.xml", f"""<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>{prod_url}/</loc></url></urlset>""")
+    
     # IPFS OR ZIP DOWNLOAD
     if pinata_jwt:
         if st.button("🌌 PUSH TO Web3 (IPFS)", type="primary"):
