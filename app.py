@@ -454,21 +454,27 @@ def gen_features():
     for line in feat_data_input.split('\n'):
         if "|" in line:
             p = line.split('|')
-            cards += f"""
-            <div class="card reveal" style="padding:0;">
-                <div class="card-content" style="text-align:left;">
-                    <div style="color:var(--s); margin-bottom:1rem; background:rgba(0,0,0,0.03); width:fit-content; padding:1rem; border-radius:12px;">{get_simple_icon(p[0])}</div>
-                    <h3 style="font-size:1.4rem; margin-bottom:0.5rem;">{p[1]}</h3>
-                    <div style="opacity:0.8; line-height:1.6;">{format_text(p[2])}</div>
-                </div>
-            </div>"""
-            
-    # FIXED: Added display:flex, flex-direction:column, and align-items:center to force absolute centering
+            if len(p) >= 3:
+                raw_text = p[2].strip()
+                # Explicit bold styling to fix contrast issues
+                styled_text = re.sub(r'\*\*(.*?)\*\*', r'<strong style="color:var(--txt); font-weight:800; font-size:1.05rem;">\1</strong>', raw_text)
+                
+                cards += f"""
+                <div class="card reveal" style="padding:0;">
+                    <div class="card-content" style="text-align:left; padding: 2rem;">
+                        <div style="color:var(--s); margin-bottom:1.5rem; background:rgba(0,0,0,0.04); width:50px; height:50px; display:flex; align-items:center; justify-content:center; border-radius:12px;">
+                            {get_simple_icon(p[0])}
+                        </div>
+                        <h3 style="font-size:1.3rem; margin-bottom:1rem; color:var(--txt);">{p[1].strip()}</h3>
+                        <p style="opacity:0.8; line-height:1.7; font-size:1rem; color:var(--txt); margin:0; hyphens:none; -webkit-hyphens:none; text-align:left;">{styled_text}</p>
+                    </div>
+                </div>"""
+                
     return f"""
-    <section id="features" style="background:#f8fafc">
+    <section id="features" style="background:var(--bg)">
         <div class="container">
             <div class="section-head reveal" style="display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom:4rem;">
-                <h2 style="margin-bottom: 0.5rem;">{f_title}</h2>
+                <h2 style="margin-bottom:0.5rem; font-size:2.5rem;">{f_title}</h2>
                 <div style="width:60px; height:4px; background:var(--s); margin:1rem 0; border-radius:2px;"></div>
             </div>
             <div class="grid-3">{cards}</div>
