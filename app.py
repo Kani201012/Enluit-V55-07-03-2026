@@ -450,8 +450,31 @@ def get_simple_icon(name):
     return f'<svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="{path}"/></svg>'
 
 def gen_features():
-    cards = "".join([f'<div class="modern-feature-card reveal"><div class="feature-icon-wrapper">{get_simple_icon(p[0])}</div><div class="feature-content"><h3>{p[1].strip()}</h3><div>{format_text(p[2].strip())}</div></div></div>' for l in feat_data_input.split('\n') if (p:=l.split('|')) and len(p)>=3])
-    return f'<section id="features" style="background:var(--bg); position:relative; z-index:2;"><div class="container"><div class="section-head reveal"><h2>{f_title}</h2><p class="section-subtitle">ENGINEERED FOR ABSOLUTE DOMINANCE.</p></div><div class="modern-grid-3">{cards}</div></div></section>'
+    cards = ""
+    for line in feat_data_input.split('\n'):
+        if "|" in line:
+            p = line.split('|')
+            cards += f"""
+            <div class="card reveal" style="padding:0;">
+                <div class="card-content" style="text-align:left;">
+                    <div style="color:var(--s); margin-bottom:1rem; background:rgba(0,0,0,0.03); width:fit-content; padding:1rem; border-radius:12px;">{get_simple_icon(p[0])}</div>
+                    <h3 style="font-size:1.4rem; margin-bottom:0.5rem;">{p[1]}</h3>
+                    <div style="opacity:0.8; line-height:1.6;">{format_text(p[2])}</div>
+                </div>
+            </div>"""
+            
+    # FIXED: Added display:flex, flex-direction:column, and align-items:center to force absolute centering
+    return f"""
+    <section id="features" style="background:#f8fafc">
+        <div class="container">
+            <div class="section-head reveal" style="display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom:4rem;">
+                <h2 style="margin-bottom: 0.5rem;">{f_title}</h2>
+                <div style="width:60px; height:4px; background:var(--s); margin:1rem 0; border-radius:2px;"></div>
+            </div>
+            <div class="grid-3">{cards}</div>
+        </div>
+    </section>
+    """
 def gen_stats():
     return f"""
     <div class="stats-ribbon-container container reveal">
