@@ -884,8 +884,8 @@ def build_page(title, content, extra_js=""):
 
 def gen_booking_content():
     if not show_booking: return ""
-    return f'<section class="hero" style="min-height:30vh; background:var(--p); text-align:center;"><div class="container hero-content"><h1>{booking_title}</h1><p>{booking_desc}</p></div></section><section><div class="container" style="text-align:center;"><div style="background:white; border-radius:12px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.1); width:100%;">{booking_embed}</div></div></section>'
-    """
+    return f'<section class="hero" style="min-height:30vh; background:var(--p);"><div class="container hero-content"><h1>{booking_title}</h1><p>{booking_desc}</p></div></section><section><div class="container" style="text-align:center;"><div style="background:white; border-radius:12px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.1); width:100%;">{booking_embed}</div></div></section>'
+
 def gen_blog_index_html():
     if not show_blog: return ""
     return f"""
