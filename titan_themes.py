@@ -36,6 +36,16 @@ THEME_REGISTRY = {
     "23. Retro Synthwave": {"bg": "#2b213a", "txt": "#e0d6eb", "card": "#181425", "p": "#ff007f", "s": "#00f0ff", "nav": "rgba(43,33,58,0.9)", "shadow": "0 0 15px rgba(255,0,127,0.5)", "radius": "10px", "border": "1px solid #ff007f"},
     "24. Gradient Mesh": {"bg": "linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)", "txt": "#333", "card": "rgba(255,255,255,0.6)", "p": "#f77062", "s": "#3f51b5", "nav": "rgba(255,255,255,0.4)", "shadow": "0 8px 32px rgba(0,0,0,0.1)", "radius": "30px", "border": "1px solid rgba(255,255,255,0.5)"},
     "25. Midnight Ocean": {"bg": "#0f2027", "txt": "#d1d5db", "card": "#203a43", "p": "#2c5364", "s": "#38ef7d", "nav": "rgba(15,32,39,0.9)", "shadow": "0 15px 25px rgba(0,0,0,0.3)", "radius": "16px", "border": "1px solid #2c5364"}
+    "26. Kenyan Heritage (Elite Safari)": {
+        "bg": "#FDFCFB",         # Soft Bone/Ivory
+        "txt": "#1A1A1A",        # Obsidian
+        "card": "#FFFFFF",       # Pure White
+        "p": "#C5A059",          # Safari Gold
+        "s": "#8B0000",          # Maasai Royal Red
+        "nav": "rgba(253,252,251,0.9)", 
+        "shadow": "0 15px 35px rgba(197,160,89,0.1)", 
+        "radius": "20px", 
+        "border": "1px solid #E5E1DA"}
 }
 
 def generate_modern_css(theme_name, h_font, b_font, hero_align, h_color, b_color, h1_size, p_size, cta_bg, cta_txt):
