@@ -936,7 +936,7 @@ def gen_product_page_content(is_demo=False):
     <section style="padding-top:140px; background: var(--bg); min-height: 100vh;">
         <div class="container">
             <a href="index.html#inventory" class="back-btn" style="color:var(--p); text-decoration:none; font-weight:700; display:inline-flex; align-items:center; gap:8px; margin-bottom:30px; transition:0.3s;">← BACK TO STORE</a>
-            <div id="product-detail-target">Loading Architecture Specifications...</div>
+            <div id="product-detail-target">Loading Specifications...</div>
         </div>
     </section>
     {gen_csv_parser()}
@@ -964,7 +964,10 @@ def gen_product_page_content(is_demo=False):
                         mainMedia = `<model-viewer src="${{clean[5]}}" ar ar-modes="webxr scene-viewer quick-look" camera-controls tone-mapping="neutral" shadow-intensity="1" auto-rotate style="width:100%; height:500px; border-radius:24px;"></model-viewer>`;
                     }}
 
-                    let btnAction = `<button onclick="addToCart('${{clean[0]}}', '${{clean[1]}}')" class="btn btn-accent" style="width: fit-content; min-width: 280px; padding: 0 50px; height:4rem; box-shadow: 0 20px 40px -10px var(--s);">ADD TO CART</button>`;
+                    let stripe = (clean.length > 4 && clean[4].includes('http') && !clean[4].match(/\\.(jpg|jpeg|png|gif|webp)$/i)) ? clean[4] : '';
+                    let btnAction = stripe ? 
+                        `<a href="${{stripe}}" class="btn btn-accent" style="width: fit-content; min-width: 280px; padding: 0 50px; text-decoration:none; display: inline-flex; align-items:center; justify-content:center; height:4rem; box-shadow: 0 20px 40px -10px var(--s);">SECURE NOW</a>` : 
+                        `<button onclick="addToCart('${{clean[0]}}', '${{clean[1]}}')" class="btn btn-accent" style="width: fit-content; min-width: 280px; padding: 0 50px; height:4rem;">ADD TO CART</button>`;
                     
                     const u = encodeURIComponent(window.location.href); 
                     const t = encodeURIComponent(clean[0]);
@@ -975,19 +978,10 @@ def gen_product_page_content(is_demo=False):
                             <div class="product-media-column">
                                 ${{mainMedia}}
                                 <div style="display:flex; margin-top:20px; overflow-x:auto; padding-bottom:10px;">${{thumbHtml}}</div>
-                                
-                                <div style="margin-top:40px; padding:2rem; background:rgba(128,128,128,0.05); border-radius:20px; border:1px dashed rgba(128,128,128,0.2);">
-                                    <p style="font-size:0.85rem; font-weight:700; text-transform:uppercase; color:var(--p); margin-bottom:10px; letter-spacing:1px;">Verified Static Security</p>
-                                    <p style="font-size:0.9rem; opacity:0.7; line-height:1.4;">This architecture is 100% Zero-DB. Your data is immutable, encrypted, and immune to SQL injection attacks.</p>
-                                </div>
                             </div>
 
                             <!-- RIGHT SIDE: SCROLLING CONTENT -->
                             <div class="product-info-column">
-                                <nav style="margin-bottom:20px; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; opacity:0.4;">
-                                    Store / Architecture / High-Velocity
-                                </nav>
-                                
                                 <h1 style="font-family:var(--h-font); font-size:clamp(2.5rem, 4vw, 4rem); line-height:1.1; margin-bottom:1.5rem; color:var(--txt);">${{clean[0]}}</h1>
                                 
                                 <div class="product-price-tag">${{clean[1]}}</div>
@@ -1001,7 +995,7 @@ def gen_product_page_content(is_demo=False):
                                 </div>
                                 
                                 <div style="margin-top:60px; padding-top:30px; border-top:1px solid rgba(128,128,128,0.1);">
-                                    <p style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#94a3b8; margin-bottom:20px; letter-spacing:1px;">Share Specifications:</p>
+                                    <p style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#94a3b8; margin-bottom:20px; letter-spacing:1px;">Share with others:</p>
                                     <div class="share-row" style="display:flex; gap:15px;">
                                         <a href="https://wa.me/?text=${{t}}%20${{u}}" target="_blank" style="background:#25D366; width:45px; height:45px; display:flex; align-items:center; justify-content:center; border-radius:12px; color:white; text-decoration:none;"><svg viewBox="0 0 24 24" fill="white" width="20"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23c-1.48 0-2.93-.39-4.19-1.15l-.3-.17l-3.12.82l.83-3.04l-.2-.32a8.188 8.188 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24m-3.53 3.16c-.13 0-.35.05-.54.26c-.19.2-.72.7-.72 1.72s.73 2.01.83 2.14c.1.13 1.44 2.19 3.48 3.07c.49.21.87.33 1.16.43c.49.16.94.13 1.29.08c.4-.06 1.21-.5 1.38-.98c.17-.48.17-.89.12-.98c-.05-.09-.18-.13-.37-.23c-.19-.1-.1.13-.1.13s-1.13-.56-1.32-.66c-.19-.1-.32-.15-.45.05c-.13.2-.51.65-.62.78c-.11.13-.23.15-.42.05c-.19-.1-.8-.3-1.53-.94c-.57-.5-1.02-1.12-1.21-1.45c-.11-.19-.01-.29.09-.38c.09-.08.19-.23.29-.34c.1-.11.13-.19.19-.32c.06-.13.03-.24-.01-.34c-.05-.1-.45-1.08-.62-1.48c-.16-.4-.36-.34-.51-.35c-.11-.01-.25-.01-.4-.01Z"/></svg></a>
                                         <a href="https://www.facebook.com/sharer/sharer.php?u=${{u}}" target="_blank" style="background:#1877F2; width:45px; height:45px; display:flex; align-items:center; justify-content:center; border-radius:12px; color:white; text-decoration:none;"><svg viewBox="0 0 24 24" fill="white" width="20"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
